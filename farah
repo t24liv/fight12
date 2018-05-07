@@ -1,0 +1,117 @@
+package fight12Package;
+import java.util.Scanner;
+public class MainClass{
+		public static void main(String[] args){
+			char input = 's';
+			
+			Scanner sc = new Scanner(System.in);
+			System.out.println("Please Enter the Arena Dimensions: ");
+			int d = sc.nextInt();
+
+			int x = 1;
+			int y = d/2;
+			drawArena(d, x, y);
+			boolean validMove = false;
+
+
+			while(validMove == false){
+				System.out.println("To Move use WASD and Q to stay at your current posision: ");
+				int[] coo = move(x, y, input, sc);
+				movable(coo[0], coo[1], d);
+				if(movable(coo[0], coo[1], d) == true){
+					x = coo[0];
+					y = coo[1];
+					validMove = true;
+				} else {
+					System.out.println("move didn't return true and you can't move");
+				}
+			}
+			validMove = false;
+			drawArena(d, x, y);
+			
+		}
+
+
+	  	public static int[] move(int x, int y,char input, Scanner sc){
+	  		int[] coo = new int [2];
+	  		boolean looping = true;
+	  		
+	  		while (looping == true){
+	  			
+	  			input = sc.next().charAt(0);
+	  			
+	  			switch (input) {
+	  				case 'w':
+	  					x -= 1;
+	  					looping = false;
+	  					break;
+	  				case 'a': 
+	  					y-= 1;
+	  					looping = false;
+	  					break;
+	  				case 's': 
+	  					x += 1;
+	  					looping = false;
+	  					break;
+	  				case 'd': 
+	  					y += 1;
+	  					looping = false;
+	  					break;
+	  				case 'q': 
+	  					looping = false;
+	  					break;
+	  					
+					default :
+						looping = true;
+						System.out.println("Please Enter a valid value: ");
+						continue;
+	  			}
+			}
+	  		coo[0] = x;
+	  		coo[1] = y;
+	  		looping = true;
+	  		return coo;
+		}
+		
+
+	  	
+			
+		public static boolean movable(int x, int y, int d) {
+			boolean moving = false;
+			if (x == 0 || y == 0){
+				moving = false;
+			} else if (x == d || y == d ) {
+				moving = false;
+			} else if (x == d - 2 && y == d/2) {
+				moving = false;
+			} else {
+				moving = true;
+			}
+		return moving;
+		}
+
+		
+		
+
+		
+		public static void drawArena(int d, int x, int y) {
+			char[][] field = new char[d][d];
+			int j = 0;
+			while(j < d) {
+				for (int i = 0;i<field.length;i++){
+					if (x == j && y == i){
+						field[j][i] =  'P';
+					} else if ((j == d -2) && (i == d/2)){
+						field[j][i] =  'D';
+					} else if ((j >= 1 && j < d - 1) && (i >= 1 && i < d - 1) ) {
+						field[j][i] =  ' ';
+					} else {
+						field[j][i] = '#';
+					}
+					System.out.print(field[j][i]);
+				}
+				j++;
+				System.out.println();
+			}
+		}
+	}
